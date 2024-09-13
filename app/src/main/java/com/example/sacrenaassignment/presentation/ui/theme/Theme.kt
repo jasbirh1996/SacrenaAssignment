@@ -1,4 +1,4 @@
-package com.example.sacrenaassignment.ui.theme
+package com.example.sacrenaassignment.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build

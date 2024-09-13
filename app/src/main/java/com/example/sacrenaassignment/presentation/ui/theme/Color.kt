@@ -1,4 +1,4 @@
-package com.example.sacrenaassignment.ui.theme
+package com.example.sacrenaassignment.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

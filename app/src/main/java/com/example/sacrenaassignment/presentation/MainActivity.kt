@@ -1,4 +1,4 @@
-package com.example.sacrenaassignment
+package com.example.sacrenaassignment.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,7 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.sacrenaassignment.ui.theme.SacrenaAssignmentTheme
+import com.example.sacrenaassignment.presentation.ui.theme.SacrenaAssignmentTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
