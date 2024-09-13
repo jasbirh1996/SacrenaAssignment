@@ -1,6 +1,9 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.compose") version "2.0.0"
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -66,4 +69,20 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    // hilt
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+    implementation("io.coil-kt:coil-compose:2.7.0")
+    // hiltViewModal
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+
+    // navigation
+    implementation("androidx.navigation:navigation-compose:2.8.0")
+
+
+    // streamChat
+    implementation("io.getstream:stream-chat-android-compose:6.4.3")
+    implementation("io.getstream:stream-chat-android-offline:6.4.3")
+    implementation("androidx.compose.material:material-icons-extended:1.6.0-alpha08")
 }
