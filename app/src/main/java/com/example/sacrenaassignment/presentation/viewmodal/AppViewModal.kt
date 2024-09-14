@@ -1,5 +1,10 @@
 package com.example.sacrenaassignment.presentation.viewmodal
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.net.Uri
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,7 +12,10 @@ import com.example.sacrenaassignment.domain.use_cases.ConnectUserAndGetConnectio
 import com.example.sacrenaassignment.presentation.state.ChannelScreenState
 import com.example.sacrenaassignment.utils.NetworkClass
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.getstream.chat.android.models.Attachment
+import io.getstream.chat.android.models.Message
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 
@@ -16,6 +24,9 @@ class AppViewModal @Inject constructor(private val connectUserUseCase : ConnectU
 
     private var _channelState = mutableStateOf(ChannelScreenState())
     val channelState = _channelState
+    var capturedImageUri: Uri? = null
+    var channelId: String? = null
+    var file : File? = null
     init {
         viewModelScope.launch {
 
@@ -46,6 +57,18 @@ class AppViewModal @Inject constructor(private val connectUserUseCase : ConnectU
 
             }
 
+        }
+    }
+
+
+    @SuppressLint("SuspiciousIndentation")
+    fun uploadImage(context : Context, onClick: ()->Unit) {
+        // Get the file from URI
+        viewModelScope.launch {
+            if(file!=null){
+                connectUserUseCase.uploadImage(file!!,channelId?:"",onClick)
+
+            }
         }
     }
 }

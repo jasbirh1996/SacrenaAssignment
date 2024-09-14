@@ -1,6 +1,7 @@
 package com.example.sacrenaassignment.presentation
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,12 +15,22 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.sacrenaassignment.presentation.custom_composable.PreviewImage
+import com.example.sacrenaassignment.presentation.screens.ChannelListScreen
+import com.example.sacrenaassignment.presentation.screens.ChatScreen
 import com.example.sacrenaassignment.presentation.ui.theme.SacrenaAssignmentTheme
 import com.example.sacrenaassignment.presentation.viewmodal.AppViewModal
+import dagger.hilt.android.AndroidEntryPoint
+import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.models.Message
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject
+    lateinit var client : ChatClient
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContent {
             SacrenaAssignmentTheme {
@@ -45,8 +56,7 @@ class MainActivity : ComponentActivity() {
                                     val msg = Message(text = message)
                                     channel.sendMessage(msg).enqueue { result ->
                                         if (result.isSuccess) {
-
-
+                                            Log.e("messageSent:",result.getOrNull()?.text?:"")
                                             // Clear the input after successful send
                                         }
                                     }
@@ -57,7 +67,6 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable("previewScreen") { backStackEntry ->
-                        vm.capturedImageUri
                         PreviewImage(
                             navController,
                             viewModal = vm

@@ -1,18 +1,22 @@
 package com.example.sacrenaassignment.data.repository
 
 import android.util.Log
+import android.widget.Toast
 import com.example.sacrenaassignment.domain.repository.AppRepository
 import com.example.sacrenaassignment.utils.AppConstants
 import com.example.sacrenaassignment.utils.NetworkClass
 import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.client.api.models.QueryChannelsRequest
+import io.getstream.chat.android.models.Attachment
 import io.getstream.chat.android.models.Channel
 import io.getstream.chat.android.models.ConnectionData
 import io.getstream.chat.android.models.Filters
+import io.getstream.chat.android.models.Message
 import io.getstream.chat.android.models.User
 import io.getstream.chat.android.models.querysort.QuerySortByField
 import io.getstream.chat.android.models.querysort.QuerySortByField.Companion.descByName
 import io.getstream.result.Result
+import java.io.File
 import javax.inject.Inject
 
 class AppRepositoryImp @Inject constructor(private val client: ChatClient) : AppRepository {
@@ -62,6 +66,31 @@ class AppRepositoryImp @Inject constructor(private val client: ChatClient) : App
         } else {
             NetworkClass.Error(message = channelListResult.errorOrNull()?.message?:"something went wrong")
             // Handle the error case
+        }
+    }
+
+    override suspend fun uploadImage(file: File, channelId: String,onClick: ()->Unit) {
+        val result =  client.channel(channelId).sendImage(file).execute()
+        if (result.isSuccess){
+            result.map {
+                val attachment = Attachment(
+                    type = "image",
+                    imageUrl = it.file,
+                )
+                val message = Message(
+                    attachments = mutableListOf(attachment),
+                )
+                val data = client.channel(channelId).sendMessage(message = message).execute()
+                if(data.isSuccess){
+                    onClick()
+                    Log.e("fileUploaded","success")
+                }
+
+            }
+
+        }else{
+            onClick()
+            Log.e("error","image not uploaded")
         }
     }
 
