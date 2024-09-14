@@ -25,9 +25,10 @@ import androidx.navigation.NavController
 import com.example.sacrenaassignment.presentation.custom_composable.UserListItem
 import com.example.sacrenaassignment.presentation.ui.theme.AppGrey
 import com.example.sacrenaassignment.presentation.viewmodal.AppViewModal
+import io.getstream.chat.android.client.ChatClient
 
 @Composable
-fun ChannelListScreen(navController: NavController, vm: AppViewModal) {
+fun ChannelListScreen(navController: NavController, vm: AppViewModal,chatClient: ChatClient) {
     Box(
         modifier = Modifier
             .background(AppGrey)
@@ -64,7 +65,7 @@ fun ChannelListScreen(navController: NavController, vm: AppViewModal) {
                         UserListItem(user = user, onClick = {
                             // Navigate to chat screen when user clicks on the item
                             navController.navigate("chatScreen/${user.cid}")
-                        }, isOnline = true)
+                        }, isOnline = true, client = chatClient)
                     }
 
                 }

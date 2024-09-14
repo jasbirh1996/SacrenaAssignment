@@ -92,7 +92,7 @@ fun ChatScreen(
 
 
         // Subscribe to new message events
-        val disposable: Disposable = client.subscribe { event: ChatEvent ->
+        client.subscribe { event: ChatEvent ->
             when (event) {
                 // Check for specific event types
                 is NewMessageEvent -> {
@@ -257,7 +257,7 @@ fun ChatScreen(
 
                     value = messageText.value,
                     onValueChange = { messageText.value = it },
-                    placeholder = { Text("Type a message...", fontSize = 12.sp) },
+                    placeholder = { Text("Message", fontSize = 12.sp) },
                     modifier = Modifier,
                     singleLine = true,
                     shape = RoundedCornerShape(16.dp),
@@ -286,7 +286,8 @@ fun ChatScreen(
                     modifier = Modifier
                         .size(30.dp) // Adjust the size to make it circular
                         .clip(CircleShape)
-                        .background(LightGreen)
+
+                        .background( if(messageText.value.isNotEmpty())LightGreen else Color.Gray)
                         .padding(6.dp) // You can change the background color
                 ) {
                     Icon(

@@ -33,48 +33,47 @@ class MainActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
         setContent {
-            SacrenaAssignmentTheme {
-                val vm = hiltViewModel<AppViewModal>()
-                val navController = rememberNavController()
+            val vm = hiltViewModel<AppViewModal>()
+            val navController = rememberNavController()
 
-                // Define navigation routes
-                NavHost(navController = navController, startDestination = "channelListScreen") {
-                    composable("channelListScreen") {
-                        ChannelListScreen(navController, vm)
-                    }
-                    composable("chatScreen/{channelId}") { backStackEntry ->
-                        val channelId = backStackEntry.arguments?.getString("channelId")
-                        // Pass the channelId to ChatScreen and load chat data for the channel
+            // Define navigation routes
+            NavHost(navController = navController, startDestination = "channelListScreen") {
+                composable("channelListScreen") {
+                    ChannelListScreen(navController, vm, chatClient = client)
+                }
+                composable("chatScreen/{channelId}") { backStackEntry ->
+                    val channelId = backStackEntry.arguments?.getString("channelId")
+                    // Pass the channelId to ChatScreen and load chat data for the channel
 
-                        if (channelId != null) {
-                            ChatScreen(
-                                navController,
-                                channelId = channelId,
-                                client = client,
-                                onSendMessage = { message ->
-                                    val channel = client.channel(channelId)
-                                    val msg = Message(text = message)
-                                    channel.sendMessage(msg).enqueue { result ->
-                                        if (result.isSuccess) {
-                                            Log.e("messageSent:",result.getOrNull()?.text?:"")
-                                            // Clear the input after successful send
-                                        }
-                                    }
-                                }, viewModal = vm
-                            )
-                        }
-
-                    }
-
-                    composable("previewScreen") { backStackEntry ->
-                        PreviewImage(
+                    if (channelId != null) {
+                        ChatScreen(
                             navController,
-                            viewModal = vm
+                            channelId = channelId,
+                            client = client,
+                            onSendMessage = { message ->
+                                val channel = client.channel(channelId)
+                                val msg = Message(text = message)
+                                channel.sendMessage(msg).enqueue { result ->
+                                    if (result.isSuccess) {
+                                        Log.e("messageSent:",result.getOrNull()?.text?:"")
+                                        // Clear the input after successful send
+                                    }
+                                }
+                            }, viewModal = vm
                         )
-
                     }
+
+                }
+
+                composable("previewScreen") { backStackEntry ->
+                    PreviewImage(
+                        navController,
+                        viewModal = vm
+                    )
+
                 }
             }
+
         }
     }
 }

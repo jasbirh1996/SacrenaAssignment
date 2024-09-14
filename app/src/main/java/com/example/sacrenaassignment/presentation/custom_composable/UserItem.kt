@@ -18,6 +18,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,17 +30,25 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.core.internal.InternalStreamChatApi
 import io.getstream.chat.android.models.Channel
+import javax.inject.Inject
 
 @OptIn(InternalStreamChatApi::class)
 @SuppressLint("SuspiciousIndentation")
 @Composable
-fun UserListItem(user: Channel, isOnline: Boolean, onClick: () -> Unit) {
+fun UserListItem  (user: Channel, isOnline: Boolean, onClick: () -> Unit,client : ChatClient) {
+    val lastMessage = remember { mutableStateOf("") }
+    LaunchedEffect(lastMessage.value) {
+        // Fetch chat messages and update the list
+        val result = client.channel(user.cid).watch().execute()
+        if (result.isSuccess) {
+            result.map {
+                lastMessage.value = it.messages.last().text
 
-
-
-    var name = user.membership?.user?.name ?: "b"
+            }
+        }}
 
     Column (
         modifier = Modifier
@@ -113,7 +124,7 @@ fun UserListItem(user: Channel, isOnline: Boolean, onClick: () -> Unit) {
 
                 // Last message
                 Text(
-                    text = name,
+                    text = lastMessage.value,
                     fontSize = 13.sp,
                     color = Color.Gray,
                     maxLines = 1, // Limit message to one line
