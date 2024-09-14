@@ -2,6 +2,8 @@ package com.example.sacrenaassignment.di
 
 
 import android.content.Context
+import com.example.sacrenaassignment.data.repository.AppRepositoryImp
+import com.example.sacrenaassignment.domain.repository.AppRepository
 import com.example.sacrenaassignment.utils.AppConstants
 import dagger.Module
 import dagger.Provides
@@ -43,5 +45,11 @@ object AppModule {
             .withPlugins(offlinePluginFactory, statePluginFactory)
             .logLevel(ChatLogLevel.ALL)
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideRepo( client: ChatClient):AppRepository{
+        return AppRepositoryImp(client)
     }
 }
