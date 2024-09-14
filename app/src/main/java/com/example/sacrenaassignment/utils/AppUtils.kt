@@ -1,5 +1,8 @@
 package com.example.sacrenaassignment.utils
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -16,4 +19,5 @@ object AppUtils {
             else -> SimpleDateFormat("MMM d, yyyy", Locale.getDefault()).format(date)
         }
     }
+
 }

@@ -22,7 +22,8 @@ class ConnectUserAndGetConnectionData @Inject constructor(private val appReposit
     }
     suspend fun fetchChannelList(connectionData: Result<ConnectionData>):List<Channel>{
         if(connectionData.isSuccess){
-            appRepository.fetchChannelList()
+          val data =  appRepository.fetchChannelList()
+            return data.data?: emptyList()
         }
         return  emptyList()
 

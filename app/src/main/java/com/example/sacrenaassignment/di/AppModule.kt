@@ -1,10 +1,12 @@
 package com.example.sacrenaassignment.di
 
 
+import android.app.Application
 import android.content.Context
 import com.example.sacrenaassignment.data.repository.AppRepositoryImp
 import com.example.sacrenaassignment.domain.repository.AppRepository
 import com.example.sacrenaassignment.utils.AppConstants
+import com.example.sacrenaassignment.utils.NetworkDetector
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -51,5 +53,11 @@ object AppModule {
     @Singleton
     fun provideRepo( client: ChatClient):AppRepository{
         return AppRepositoryImp(client)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNetworkStatus(app : Application): NetworkDetector{
+        return NetworkDetector(app)
     }
 }
