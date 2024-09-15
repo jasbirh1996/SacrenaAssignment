@@ -15,7 +15,9 @@ import com.example.sacrenaassignment.utils.NetworkDetector
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.getstream.chat.android.models.Attachment
 import io.getstream.chat.android.models.Message
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import javax.inject.Inject
 
@@ -74,9 +76,11 @@ class AppViewModal @Inject constructor(private val connectUserUseCase: ConnectUs
     @SuppressLint("SuspiciousIndentation")
     fun uploadImage(context: Context, onClick: () -> Unit) {
         // Get the file from URI
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             if (file != null) {
                 connectUserUseCase.uploadImage(file!!, channelId ?: "", onClick)
+
+
 
             }
         }

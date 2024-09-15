@@ -16,6 +16,8 @@ import io.getstream.chat.android.models.User
 import io.getstream.chat.android.models.querysort.QuerySortByField
 import io.getstream.chat.android.models.querysort.QuerySortByField.Companion.descByName
 import io.getstream.result.Result
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
 import javax.inject.Inject
 
@@ -82,9 +84,12 @@ class AppRepositoryImp @Inject constructor(private val client: ChatClient) : App
                 )
                 val data = client.channel(channelId).sendMessage(message = message).execute()
                 if(data.isSuccess){
-                    onClick()
+                    withContext(Dispatchers.Main){
+                        onClick()
+                    }
                     Log.e("fileUploaded","success")
                 }
+
 
             }
 
